@@ -1,0 +1,52 @@
+jsx语法：
+jsx并不是新的语言，只是js的扩展。
+如果遇到{就用js解析，
+如果遇到<使用html来解析
+
+组件：
+就像使用普通的html标签使用自定义组件
+<Hello></Hello>
+<Hello/>
+注意事项：
+①组件名称首字母必须是大写
+②返回多个元素 要放在一个顶层标签
+③在组件的render方法返回元素时，不允许直接换行
+
+props：
+不仅可以传递普通的值，传递一些方法，就像是传递值传方法
+怎么传？？
+parentComponent:
+	handleLogin:func,
+	name:'zhangsan'
+	<ButtonCom  btnName={this.name}/>
+	<ButtonCom funcClick={this.handleLogin}/>
+怎么接受？
+ this.props.btnName
+ this.props.funClick()
+this.props对象中的属性和创建组件时指定的属性 是一一对应的，但是有一个比较特殊
+this.props.children:当组件在被调用时，所有的子元素。当有一个子元素时，只返回一个对象；有多个子元素时，返回一个数组；没有任何子元素，返回undefined。
+React.Children.map可以帮助来处理this.props.children
+displayList:function(){
+     return React.Children.map(
+            this.props.children,
+            function(child){
+              return <li>{child}</li>
+            }
+          )
+    },
+    render:function(){
+      return <ul>
+        {
+          this.displayList()
+        }
+      </ul>
+    }
+   
+ref:
+VirtualDOM(VDOM)：是由各个组件构成一种数据结构。
+VDOM有一个diff算法，当需要更新视图时，找到VDOM与真实DOM的区别，最后最大限度的减少对真实的DOM的修改。
+在组件中，如果要拿到真实的DOM节点，必须是在插入到DOM之后，可以通过ref属性找到真实的DOM节点进行操作。
+怎么指定引用？
+<customComponent ref='refName'>
+怎么通过引用找到元素呢？
+this.refs.refName
