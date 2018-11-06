@@ -11,6 +11,15 @@ jsx并不是新的语言，只是js的扩展。
 ①组件名称首字母必须是大写
 ②返回多个元素 要放在一个顶层标签
 ③在组件的render方法返回元素时，不允许直接换行
+//第二种创建组件的方式
+class Game extends React.Component {
+	render() {
+		return (
+				<div className="game">
+				</div>
+	);
+	}
+}
 
 props：
 不仅可以传递普通的值，传递一些方法，就像是传递值传方法
