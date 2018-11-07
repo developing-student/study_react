@@ -1,0 +1,34 @@
+函数调用的表达式：
+   render: function () {
+        return <p>Hello, {(function (obj) {
+          if (obj.props.name)
+            return obj.props.name
+          else
+            return "World"
+        })(this)}</p>
+      }
+
+css引入：
+  var style = {
+    		color: "red",
+    		border: "1px #000 solid",
+    	};
+  React.render(<div style={style}></div>, document.body);
+  在组件名上加没有效果
+
+dangerouslySetInnerHTML：
+    var rawHTML = {
+      __html: "<h1>I'm inner HTML</h1>"
+    };
+    React.render(<div dangerouslySetInnerHTML={rawHTML}></div>, document.body);
+
+key:
+  react利用key来识别组件，它是一种身份标识标识，就像我们的身份证用来辨识一个人一样。
+  每个key对应一个组件，相同的key react认为是同一个组件，这样后续相同的key对应组件都不会被创建。
+  key相同，若组件属性有所变化，则react只更新组件对应的属性；没有变化则不更新。
+  key值不同，则react先销毁组件(有状态组件的componentWillUnmount会执行)，然后重新创建组件（有状态组件的constructor和componentWillUnmount都会执行）
+  key属性的使用场景最多的还是由数组动态创建的子组件的情况，需要为每个子组件添加唯一的key属性值。另外是为一个有复杂繁琐逻辑的组件添加key后，后续操作可以改变该组件的key属性值，从而达到先销毁之前的组件，再重新创建该组件。
+  key的值要保持稳定且唯一，不能使用random来生成key的值。
+  key属性是添加到自定义的子组件上，而不是子组件内部的顶层的组件上。
+  key值的唯一是有范围的，即在数组生成的同级同类型的组件上要保持唯一，而不是所有组件的key都要保持唯一。
+  不仅仅在数组生成组件上，其他地方也可以使用key，主要是react利用key来区分组件的，相同的key表示同一个组件，react不会重新销毁创建组件实例，只可能更新；key不同，react会销毁已有的组件实例，重新创建组件新的实例。
