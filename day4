@@ -1,0 +1,105 @@
+初始化阶段可以使用的函数：
+  getDefaultProps：只调用一次，实例之间共享引用
+  getInitialState：初始化每个实例特有的状态
+  componentWillMount：render之前最后一次修改状态的机会
+  render：只能访问this.props和this.state，只有一个顶层组件，不允许修改状态和DOM输出
+  componentDidMount：成功render并渲染完成真实DOM之后触发，可以修改DOM
+    var HelloWorld = React.createClass({
+        getDefaultProps: function () {
+            console.log("getDefaultProps, 1");
+            return {name: "Tom"};
+        },
+        getInitialState: function () {
+            console.log("getInitialState, 2");
+            return {myCount: count++,
+                    ready: false};
+        },
+        componentWillMount: function () {
+            console.log("componentWillMount, 3");
+            this.setState({ready: true});
+        },
+        render: function () {
+            console.log("render, 4");
+            return <p ref="childp">Hello, {this.props.name ? this.props.name : "World"}<br/>{"" + this.state.ready} {this.state.myCount}</p>;
+        },
+        componentDidMount: function () {
+            console.log("componentDidMount, 5");
+            $(React.findDOMNode(this)).append("surprise!");
+        },
+    });
+    React.render(<div><HelloWorld></HelloWorld><br/><HelloWorld></HelloWorld></div>, document.body);
+    
+运行中阶段可以使用的函数：
+  componentWillReceiveProps：父组件修改属性触发，可以修改新属性、修改状态
+  shouldComponentUpdate：返回false会阻止render调用
+  componentWillUpdate：不能修改属性和状态
+  render：只能访问this.props和this.state，只有一个顶层组件，不允许修改状态和DOM输出
+  componentDidUpdate：可以修改DOM
+    var HelloWorld = React.createClass({
+        componentWillReceiveProps: function (newProps) {
+            console.log("componentWillReceiveProps 1");
+            console.log(newProps);
+        },
+        shouldComponentUpdate: function () {
+            console.log("shouldComponentUpdate 2");
+            return true;
+        },
+        componentWillUpdate: function () {
+            console.log("componentWillUpdate 3");
+        },
+        render: function () { 
+            console.log("render 4");
+            return <p>Hello, {this.props.name ? this.props.name : "World"}</p>;
+        },
+        componentDidUpdate: function() {
+            $(React.findDOMNode(this)).append("surprise!");
+        },
+    });
+    var HelloUniverse = React.createClass({
+        getInitialState: function () {
+            return {name: ''};
+        },
+        handleChange: function (event) {
+            this.setState({name: event.target.value});
+        },
+        render: function () {
+            return <div>
+            <HelloWorld name={this.state.name}></HelloWorld>
+            <br/>
+            <input type="text" onChange={this.handleChange} />
+            </div>
+        },
+    });
+    React.render(<div><HelloUniverse></HelloUniverse></div>, document.body);
+  
+销毁阶段可以使用的函数：
+  componentWillUnmount：在删除组件之前进行清理操作，比如计时器和事件监听器
+    var HelloWorld = React.createClass({
+        render: function () { 
+            console.log("render 4");
+            return <p>Hello, {this.props.name ? this.props.name : "World"}</p>;
+        },
+        componentWillUnmount: function() {
+            console.log("BOOOOOOOOOOOOOOOOOM!");
+        },
+    });
+    var HelloUniverse = React.createClass({
+        getInitialState: function () {
+            return {name: ''};
+        },
+        handleChange: function (event) {                
+            if (event.target.value == "123") {
+                React.unmountComponentAtNode(document.getElementsByTagName("body")[0]);
+                return;
+            }
+            this.setState({name: event.target.value});
+        },
+        render: function () {
+            return <div>
+            <HelloWorld name={this.state.name}></HelloWorld>
+            <br/>
+            <input type="text" onChange={this.handleChange} />
+            </div>
+        },
+    });
+    React.render(<div><HelloUniverse></HelloUniverse></div>, document.body);
