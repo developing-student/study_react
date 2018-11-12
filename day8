@@ -1,0 +1,74 @@
+const InputForm = React.createElement(
+  "form",
+  { target: "_blank", action: "https://google.com/search" },
+  React.createElement("div", null, "Enter input and click Search"),
+  React.createElement("input", { className: "big-input" }),
+  React.createElement(Button, { label: "Search" })
+);
+
+// InputForm 使用 Button 组件，所以我们需要这样做：
+function Button (props) {
+  return React.createElement(
+    "button",
+    { type: "submit" },
+    props.label
+  );
+}
+
+// 然后我们可以通过 .render 方法直接使用 InputForm
+ReactDOM.render(InputForm, mountNode);
+ 
+注意：
+  InputForm 不是一个 React 组件；它仅仅是一个 React 元素。这就是为什么我们可以在 ReactDOM.render 中直接使用它并且可以在调用时不使用 <InputForm /> 的原因。
+  React.createElement 函数在前两个参数后接收了多个参数。从第3个参数开始的参数列表构成了创建元素的子项列表。
+  我们可以嵌套 React.createElement 调用，因为它是 JavaScript。
+  当这个元素不需要属性时，React.createElement 的第二个参数可以为空或者是一个空对象。
+  我们可以在 React 组件中混合 HTML 元素。你可以将 HTML 元素作为内置的 React 组件。
+  React 的 API 试图和 DOM API 一样，这就是为什么我们在 input 元素中使用 className 代替 class 的原因。我们都希望如果 React 的 API 成为 DOM API 本身的一部分，因为，你知道，它要好得多。
+
+
+const InputForm =
+  <form target="_blank" action="https://google.com/search">
+    <div>Enter input and click Search</div>
+    <input className="big-input" name="q" />
+    <Button label="Search" />
+  </form>;
+
+// InputForm “仍然”使用 Button 组件，所以我们也需要这样。
+// JXS 或者普通的表单都会这样做
+function Button (props) {
+  // 这里返回一个 DOM 元素。例如：
+  return <button type="submit">{props.label}</button>;
+}
+
+// 然后我们可以直接通过 .render 使用 InputForm
+ReactDOM.render(InputForm, mountNode);
+
+
+const MaybeError = ({errorMessage}) =>
+  <div>
+    {errorMessage && <ErrorDisplay message={errorMessage} />}
+  </div>;
+
+// MaybeError 组件使用 ErrorDisplay 组件
+const ErrorDisplay = ({message}) =>
+  <div style={ { color: 'red', backgroundColor: 'yellow' } }>
+    {message}
+  </div>;
+
+// 现在我们使用 MaybeError 组件：
+ReactDOM.render(
+  <MaybeError
+    errorMessage={Math.random() > 0.5 ? 'Not good' : ''}
+  />,
+  mountNode
+);
+
+
+const Doubler = ({value=[1, 2, 3]}) =>
+  <div>
+    {value.map(e => e * 2)}
+  </div>;
+
+// 使用下面内容 
+ReactDOM.render(<Doubler />, mountNode);
