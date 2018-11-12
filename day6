@@ -1,0 +1,40 @@
+
+Mixin = 一组方法
+  Mixin的目的是横向抽离出组件的相似代码
+  相似概念：面向切面编程、插件
+  优点：
+  代码复用：抽离出通用代码，减少开发成本，提高开发效率
+  即插即用：可以直接使用许多现有的Mixin来编写自己的组件
+  适应性强：改动一次代码，影响多个组件
+  缺点：
+  编写难度高：Mixin可能被用在各种环境中，兼容多种环境就需要更多的逻辑和代码，通用的代价是提高复杂度
+  降低代码可读性：组件的优势在于将逻辑和界面直接结合在一起，Mixin本质上会分散逻辑，理解起来难度更大
+  var BindingMixin = {
+      handleChange: function(key) {
+          var that = this
+          var newState = {}
+          return function(event) {
+
+              newState[key] = event.target.value
+              that.setState(newState)
+          }
+      }
+  }
+  var BindingExample = React.createClass({
+      mixins: [React.addons.LinkedStateMixin],
+      getInitialState: function() {
+          return {
+              text: '',
+              comment: '',
+          }
+      },
+      render: function() {
+          return <div>
+              <input type="text" placeholder="请输入内容" valueLink={this.linkState('text')} />
+              <textarea valueLink={this.linkState('comment')}></textarea>
+              <p>{this.state.text}</p>
+              <p>{this.state.comment}</p>
+          </div>
+      }
+  })
+  React.render(<BindingExample></BindingExample>, document.body);
