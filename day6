@@ -21,7 +21,7 @@ Mixin = 一组方法
       }
   }
   var BindingExample = React.createClass({
-      mixins: [React.addons.LinkedStateMixin],
+      mixins: [React.addons.LinkedStateMixin],//react 自带的，上面是自己编写的mixin
       getInitialState: function() {
           return {
               text: '',
