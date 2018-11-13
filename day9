@@ -1,0 +1,51 @@
+不可控组件：
+  var MyForm = React.createClass({ 
+      submitHandler: function (event) {
+          event.preventDefault();
+          var helloTo = React.findDOMNode(this.refs.helloTo).value; 
+          alert(helloTo);
+      },
+      render: function () {
+          return <form onSubmit={this.submitHandler}> 
+              <input
+                  ref="helloTo"
+                  type="text"
+                  defaultValue="Hello World!" />
+              <br />
+              <button type="submit">Speak</button>
+          </form>;
+      } 
+  });
+  React.render(<MyForm></MyForm>, document.body);
+  
+
+可控组件：
+  var MyForm = React.createClass({ 
+      getInitialState: function () {
+          return {
+              helloTo: "Hello World!"
+          }; 
+      },
+      handleChange: function (event) { 
+          this.setState({
+              helloTo: event.target.value
+          });
+      },
+      submitHandler: function (event) {
+          event.preventDefault();
+          alert(this.state.helloTo); 
+      },
+      render: function () {
+          return <form onSubmit={this.submitHandler}>
+              <input type="text" value={this.state.helloTo} onChange={this.handleChange} />
+              <br />
+              <button type="submit">Speak</button>
+          </form>;
+          } 
+      });
+  React.render(<MyForm></MyForm>, document.body);
+组件可控的好处：
+  符合React的数据流
+  数据存储在state中，便于使用
+  便于对数据进行处理
+
