@@ -27,3 +27,25 @@ componentWillUnmount
 受控组件：当表单元素指定以下属性，变成了受控组件（用户的输入操作是无效的，交给react来控制）
 input	value/checked
 select selected
+
+1 组件初始化
+原因
+组件第一次建立
+触发
+componentWillMount -> render -> componentDidMount
+2 组件更新 — props change
+原因
+props发生改变
+触发
+componentWillReceiveProps -> shouldComponentUpdate -> componentWillUpdate -> componentDidUpdate
+3 组件更新 — state change
+原因
+this.setState()使state发生改变
+触发
+shoudlComponentUpdate -> componentWillUpdate -> componentDidUpdate
+4 组件卸载或销毁
+原因
+组件卸载或销毁
+触发
+componentWillUnmount
+
